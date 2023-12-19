@@ -10,24 +10,45 @@ export function loadDOM() {
     sideMenu.classList.add("side-menu");
     buttonsArea.classList.add("buttons-area");
 
-    createTodoButton.textContent = "Add TO-DO";
-    createTodoButton.addEventListener("click", () => {
-        console.log("Opens dialog.");
-    });
+    createTodoButton.textContent = "Add new task";
+    createTodoButton.addEventListener("click", loadDialogWindow);
 
     buttonsArea.appendChild(createTodoButton);
 
     sideMenu.appendChild(buttonsArea);
     container.appendChild(sideMenu);
     container.appendChild(content);
+    
+    console.log("DOM loaded");
 }
 
 function loadDialogWindow() {
     const container = document.querySelector(".container");
     const dialog = document.createElement("dialog");
+    const dialogHead = document.createElement("div");
+    const dialogTitle = document.createElement("h1");
+    const dialogCloseIcon = document.createElement("img");
+
+    dialog.classList.add("modal");
+    dialogHead.classList.add("modal-head");
+    dialogTitle.textContent = "New Task Entry";
+    dialogCloseIcon.classList.add("close-icon");
+    dialogCloseIcon.id = "close";
+    //dialogCloseIcon.src = "assets/icons/close-circle.svg"; // get from library project
     
-    // call for genereateAddTodoForm()
-    
+    // closing the dialog window
+    dialogCloseIcon.addEventListener("click", () => {
+        dialog.close();
+    });
+
+    dialogHead.appendChild(dialogTitle);
+    dialogHead.appendChild(dialogCloseIcon);
+    dialog.appendChild(dialogHead);
+    dialog.appendChild(generateAddTodoForm());
+
+    container.appendChild(dialog);
+
+    dialog.showModal();
 }
 
 function generateAddTodoForm() {
@@ -72,6 +93,11 @@ function generateAddTodoForm() {
                     optionElement.textContent = option;
                     input.appendChild(optionElement);
                 });
+                break;
+            case "checkbox":
+                input = document.createElement("input");
+                input.type = "checkbox";
+                break;
         }
 
         input.id = field.name;
@@ -91,5 +117,10 @@ function generateAddTodoForm() {
 
     form.appendChild(submitButton);
 
+    console.log("Created Form")
     return form;
+}
+
+function saveNewTaskData() {
+    // logic for displaying/saving inputed data
 }
