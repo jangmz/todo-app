@@ -1,3 +1,5 @@
+import { ToDo } from "./todoModule";
+
 export function loadDOM() {
     const container = document.querySelector(".container");
 
@@ -11,7 +13,7 @@ export function loadDOM() {
     buttonsArea.classList.add("buttons-area");
 
     createTodoButton.textContent = "Add new task";
-    createTodoButton.addEventListener("click", loadDialogWindow);
+    createTodoButton.addEventListener("click", newTaskDialog);
 
     buttonsArea.appendChild(createTodoButton);
 
@@ -22,7 +24,7 @@ export function loadDOM() {
     console.log("DOM loaded");
 }
 
-function loadDialogWindow() {
+function newTaskDialog() {
     const container = document.querySelector(".container");
     const dialog = document.createElement("dialog");
     const dialogHead = document.createElement("div");
@@ -65,6 +67,11 @@ function generateAddTodoForm() {
         { label: "Finished", type: "checkbox", name: "finished" }
     ];
 
+    const submitButton = document.createElement("button");
+    submitButton.type = "submit";
+    submitButton.textContent = "Create To-Do";
+
+    // form creation
     fields.forEach(field => {
         // create label for input
         const label = document.createElement("label");
@@ -111,9 +118,11 @@ function generateAddTodoForm() {
         form.appendChild(input);
     });
 
-    const submitButton = document.createElement("button");
-    submitButton.type = "submit";
-    submitButton.textContent = "Create To-Do";
+    // when form is submitted
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        ToDo.createTodo(); //this does not work properly...
+    })
 
     form.appendChild(submitButton);
 
@@ -121,6 +130,23 @@ function generateAddTodoForm() {
     return form;
 }
 
-function saveNewTaskData() {
-    // logic for displaying/saving inputed data
+export function displayTask(task) {
+
+
+    // display tasks on main content div
+    const contentDiv = document.querySelector(".content");
+    
+    // create elements for the task
+    const taskCard = document.createElement("div"); 
+    const taskTitle = document.createElement("h2");
+    const taskDescr = document.createElement("p");
+    const taskDueDate = document.createElement("h4");
+    const taskPriority = document.createElement("h4");
+    const checklist = document.createElement("div");
+    const taskSubTask = document.createElement("p"); // items from checklist
+    const finished = document.createElement("h4");
+
+    // transfer all the data to the elements
+    console.log("Task received");
+    console.log(task);
 }
