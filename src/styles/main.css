@@ -9,6 +9,28 @@ body {
     flex-direction: row;
 }
 
+.modal {
+    width: 400px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-head {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.modal form .form-input {
+    display: flex;
+    flex-direction: column;
+}
+
 .side-menu {
     width: 250px;
     height: 100vh;

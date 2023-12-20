@@ -10,15 +10,18 @@ export function gatherFormData() {
     let dueDate = document.getElementById("dueDate");
     let priority = document.getElementById("priority");
     let checklist = document.getElementById("checklist");
-    let finished = document.getElementById("finished");
+    let projectTitle = document.getElementById("projectTitle");
+    //let finished = document.getElementById("finished");
 
-    let todo = new ToDo(title.value, description.value, dueDate.value, priority.value, checklist.value, finished.value);
+    console.log("project: " + projectTitle.value);
+
+    let todo = new ToDo(title.value, description.value, dueDate.value, priority.value, checklist.value/*, finished.value*/);
     console.log("To-do created!");
 
     MyProjects.forEach(project => {
-        if (project.type === "default") {
+        if (project.title.toLowerCase() === projectTitle.value) {
             project.addTodoToProject(todo);
-            console.log("To-do added to project");
+            console.log(`To-do added to ${project.title.toUpperCase()}`);
         }
     })
     
@@ -29,11 +32,10 @@ export function gatherFormData() {
 
 loadDOM();
 
-const MyProjects = [
+export const MyProjects = [
     new Project("Other", "default"),
     new Project("Home", "custom")
 ];
 
 console.log("ALL PROJECTS: ");
-
 MyProjects.forEach(project => console.log(project))

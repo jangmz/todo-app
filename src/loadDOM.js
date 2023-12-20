@@ -41,11 +41,12 @@ export function loadDOM() {
 function createTaskDialog() {
     const container = document.querySelector(".container");
     const dialog = document.createElement("dialog");
+    const modalDiv = document.createElement("div");
     const dialogHead = document.createElement("div");
     const dialogTitle = document.createElement("h1");
     const dialogCloseIcon = document.createElement("img");
 
-    dialog.classList.add("modal");
+    modalDiv.classList.add("modal");
     dialogHead.classList.add("modal-head");
     dialogTitle.textContent = "New Task Entry";
     dialogCloseIcon.classList.add("close-icon");
@@ -60,11 +61,12 @@ function createTaskDialog() {
 
     dialogHead.appendChild(dialogTitle);
     dialogHead.appendChild(dialogCloseIcon);
-    dialog.appendChild(dialogHead);
+    modalDiv.appendChild(dialogHead)
 
     const addTodoForm = generateAddTodoForm(dialog);
-    dialog.appendChild(addTodoForm);
+    modalDiv.appendChild(addTodoForm);
 
+    dialog.appendChild(modalDiv);
     container.appendChild(dialog);
 
     return dialog;
@@ -80,18 +82,21 @@ function generateAddTodoForm(dialog) {
         { label: "Due Date", type: "date", name: "dueDate", required: true },
         { label: "Priority", type: "select", name: "priority", options: ["High", "Medium", "Low"], required: true },
         { label: "Check list", type: "text", name: "checklist" },
-        // { label: "Project title", type: "select", name: "projectTitle", options: /* automatically show created projects here */"" },
-        { label: "Finished", type: "checkbox", name: "finished" }
+        { label: "Project title", type: "select", name: "projectTitle", options: ["Other", "Home"] },
+        //{ label: "Finished", type: "checkbox", name: "finished" }
     ];
 
     const submitButton = document.createElement("button");
     submitButton.type = "submit";
     submitButton.textContent = "Create To-Do";
 
-    // form creation
+    // form element creation
     fields.forEach(field => {
-        // create label for input
+        // create div + label for input
+        const fieldDiv = document.createElement("div");
         const label = document.createElement("label");
+        
+        fieldDiv.classList.add("form-input");
         label.textContent = field.label;
 
         let input;
@@ -123,14 +128,12 @@ function generateAddTodoForm(dialog) {
                     optionElement.textContent = option;
                     input.appendChild(optionElement);
                 });
-                // temporary 
-                input.value = "high";
                 break;
-            case "checkbox":
+            /*case "checkbox":
                 input = document.createElement("input");
                 input.type = "checkbox";
-                input.value = false;
-                break;
+                input.value = "checked";
+                break;*/
         }
 
         input.id = field.name;
@@ -140,8 +143,9 @@ function generateAddTodoForm(dialog) {
             input.required = true;
         }
 
-        form.appendChild(label);
-        form.appendChild(input);
+        fieldDiv.appendChild(label);
+        fieldDiv.appendChild(input);
+        form.appendChild(fieldDiv);
     });
 
     // when form is submitted
@@ -173,7 +177,7 @@ function displayTask(task) {
     const taskPriority = document.createElement("h4");
     const checklist = document.createElement("div");
     const taskSubTask = document.createElement("p"); // items from checklist
-    const taskFinished = document.createElement("h4");
+    //const taskFinished = document.createElement("h4");
 
     // add class for css
     taskCard.classList.add("task-card");
@@ -184,7 +188,7 @@ function displayTask(task) {
     taskDueDate.textContent = task.dueDate;
     taskPriority.textContent = task.priority;
     taskSubTask.textContent = task.checklist;
-    taskFinished.textContent = `Finished: ${task.finished}`;
+    //taskFinished.textContent = `Finished: ${task.finished}`;
 
     // append to card
     checklist.appendChild(taskSubTask);
@@ -193,7 +197,7 @@ function displayTask(task) {
     taskCard.appendChild(taskDueDate);
     taskCard.appendChild(taskPriority);
     taskCard.appendChild(checklist);
-    taskCard.appendChild(taskFinished);
+    //taskCard.appendChild(taskFinished);
 
     taskCardsDiv.appendChild(taskCard);
     contentDiv.appendChild(taskCardsDiv);
