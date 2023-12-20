@@ -10,7 +10,7 @@ body {
 }
 
 .side-menu {
-    width: 200px;
+    width: 250px;
     height: 100vh;
     padding: 20px;
     border-right: 1px solid black;
@@ -33,5 +33,21 @@ body {
 }
 
 .content {
+    width: 100%;
+    padding: 30px;
+}
 
+.task-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(auto-fit, 1fr);
+
+    grid-auto-flow: row;
+    gap: 20px;    
+}
+
+.task-card {
+    padding: 20px;
+    border: 1px solid black;
+    flex: auto;
 }

@@ -5,12 +5,14 @@ export function loadDOM() {
     const container = document.querySelector(".container");
 
     const content = document.createElement("div");
+    const taskCards = document.createElement("div");
     const sideMenu = document.createElement("div");
     const buttonsArea = document.createElement("div"); // buttons for creating todo and creating project
     const newTodoButton = document.createElement("button");
     const newProjectButton = document.createElement("button");
 
     content.classList.add("content");
+    taskCards.classList.add("task-cards");
     sideMenu.classList.add("side-menu");
     buttonsArea.classList.add("buttons-area");
 
@@ -25,6 +27,7 @@ export function loadDOM() {
     buttonsArea.appendChild(newProjectButton);
 
     sideMenu.appendChild(buttonsArea);
+    content.appendChild(taskCards);
     container.appendChild(sideMenu);
     container.appendChild(content);
     
@@ -155,6 +158,7 @@ function generateAddTodoForm(dialog) {
 function displayTask(task) {
     // display tasks on main content div
     const contentDiv = document.querySelector(".content");
+    const taskCardsDiv = document.querySelector(".task-cards");
     
     // create elements for the task
     const taskCard = document.createElement("div"); 
@@ -185,7 +189,9 @@ function displayTask(task) {
     taskCard.appendChild(taskPriority);
     taskCard.appendChild(checklist);
     taskCard.appendChild(taskFinished);
-    contentDiv.appendChild(taskCard);
+
+    taskCardsDiv.appendChild(taskCard);
+    contentDiv.appendChild(taskCardsDiv);
 
     console.log("To-do displayed!");
 }
