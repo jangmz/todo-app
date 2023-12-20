@@ -1,7 +1,9 @@
 import { gatherFormData } from "./index.js";
+//import closeIcon from "./assets/icons/close-circle.svg";
 
 export function loadDOM() {
     const container = document.querySelector(".container");
+    const dialog = createTaskDialog();
 
     const content = document.createElement("div");
     const taskCards = document.createElement("div");
@@ -16,7 +18,10 @@ export function loadDOM() {
     buttonsArea.classList.add("buttons-area");
 
     newTodoButton.textContent = "Add new to-do";
-    newTodoButton.addEventListener("click", newTaskDialog);
+    //newTodoButton.addEventListener("click", newTaskDialog);
+    newTodoButton.addEventListener("click", () => {
+        dialog.showModal();
+    });
     newProjectButton.textContent = "Add new project";
     newProjectButton.addEventListener("click", () => {
         console.log("Not yet functional");
@@ -33,7 +38,7 @@ export function loadDOM() {
     console.log("DOM loaded");
 }
 
-function newTaskDialog() {
+function createTaskDialog() {
     const container = document.querySelector(".container");
     const dialog = document.createElement("dialog");
     const dialogHead = document.createElement("div");
@@ -45,7 +50,8 @@ function newTaskDialog() {
     dialogTitle.textContent = "New Task Entry";
     dialogCloseIcon.classList.add("close-icon");
     dialogCloseIcon.id = "close";
-    //dialogCloseIcon.src = "assets/icons/close-circle.svg"; // get from library project
+    //dialogCloseIcon.src = closeIcon; 
+    dialogCloseIcon.src = "#";
     
     // closing the dialog window -> does not work yet
     dialogCloseIcon.addEventListener("click", () => {
@@ -61,7 +67,7 @@ function newTaskDialog() {
 
     container.appendChild(dialog);
 
-    dialog.showModal();
+    return dialog;
 }
 
 function generateAddTodoForm(dialog) {
