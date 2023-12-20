@@ -1,4 +1,3 @@
-import { ToDo } from "./todoModule";
 import { gatherFormData } from "./index.js";
 
 export function loadDOM() {

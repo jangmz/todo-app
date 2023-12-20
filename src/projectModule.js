@@ -5,11 +5,7 @@ export class Project {
         this.tasks = []; // here you push your "todo" objects
     }
 
-    addTodoToProject(ToDo, projectTitle) {
-        //logic for adding todo object to project
-        if (!projectTitle) { // if the project has not been chosen, save to default project
-            projectTitle = "Other";
-        }
+    addTodoToProject(ToDo) {
+        this.tasks.push(ToDo);    
     }
-
 }
