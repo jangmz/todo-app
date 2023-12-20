@@ -13,11 +13,3 @@ export class Project {
     }
 
 }
-
-const MyProjects = [
-    {title: "Other", type: "default"}
-];
-
-console.log("ALL PROJECTS: ");
-
-MyProjects.forEach(project => console.log(project))

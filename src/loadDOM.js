@@ -1,4 +1,5 @@
 import { ToDo } from "./todoModule";
+import { gatherFormData } from "./index.js";
 
 export function loadDOM() {
     const container = document.querySelector(".container");
@@ -38,7 +39,7 @@ function newTaskDialog() {
     dialogCloseIcon.id = "close";
     //dialogCloseIcon.src = "assets/icons/close-circle.svg"; // get from library project
     
-    // closing the dialog window
+    // closing the dialog window -> does not work yet
     dialogCloseIcon.addEventListener("click", () => {
         dialog.close();
     });
@@ -46,14 +47,16 @@ function newTaskDialog() {
     dialogHead.appendChild(dialogTitle);
     dialogHead.appendChild(dialogCloseIcon);
     dialog.appendChild(dialogHead);
-    dialog.appendChild(generateAddTodoForm());
+
+    const addTodoForm = generateAddTodoForm(dialog);
+    dialog.appendChild(addTodoForm);
 
     container.appendChild(dialog);
 
     dialog.showModal();
 }
 
-function generateAddTodoForm() {
+function generateAddTodoForm(dialog) {
     const form = document.createElement("form");
     form.id = "addTodo";
 
@@ -84,13 +87,19 @@ function generateAddTodoForm() {
             case "text":
                 input = document.createElement("input");
                 input.type = field.type;
+                // temporary 
+                input.value = "test text field";
                 break;
             case "textarea":
                 input = document.createElement("textarea");
+                // temporary 
+                input.value = "test textarea field";
                 break;
             case "date":
                 input = document.createElement("input");
                 input.type = "date";
+                // temporary 
+                input.value = "2023-12-23";
                 break;
             case "select":
                 input = document.createElement("select");
@@ -100,10 +109,13 @@ function generateAddTodoForm() {
                     optionElement.textContent = option;
                     input.appendChild(optionElement);
                 });
+                // temporary 
+                input.value = "high";
                 break;
             case "checkbox":
                 input = document.createElement("input");
                 input.type = "checkbox";
+                input.value = false;
                 break;
         }
 
@@ -119,9 +131,13 @@ function generateAddTodoForm() {
     });
 
     // when form is submitted
-    form.addEventListener("submit", function(e) {
+    form.addEventListener("submit", (e) => {
         e.preventDefault();
-        ToDo.createTodo(); //this does not work properly...
+        // gather all the input data and create a todo object, display todo on the DOM
+        displayTask(gatherFormData());
+
+        // after submission, dialog closes
+        dialog.close();
     })
 
     form.appendChild(submitButton);
@@ -130,9 +146,7 @@ function generateAddTodoForm() {
     return form;
 }
 
-export function displayTask(task) {
-
-
+function displayTask(task) {
     // display tasks on main content div
     const contentDiv = document.querySelector(".content");
     
@@ -144,9 +158,28 @@ export function displayTask(task) {
     const taskPriority = document.createElement("h4");
     const checklist = document.createElement("div");
     const taskSubTask = document.createElement("p"); // items from checklist
-    const finished = document.createElement("h4");
+    const taskFinished = document.createElement("h4");
 
-    // transfer all the data to the elements
-    console.log("Task received");
-    console.log(task);
+    // add class for css
+    taskCard.classList.add("task-card");
+
+    // add values to elements
+    taskTitle.textContent = task.title;
+    taskDescr.textContent = task.description;
+    taskDueDate.textContent = task.dueDate;
+    taskPriority.textContent = task.priority;
+    taskSubTask.textContent = task.checklist;
+    taskFinished.textContent = task.finished;
+
+    // append to card
+    checklist.appendChild(taskSubTask);
+    taskCard.appendChild(taskTitle);
+    taskCard.appendChild(taskDescr);
+    taskCard.appendChild(taskDueDate);
+    taskCard.appendChild(taskPriority);
+    taskCard.appendChild(checklist);
+    taskCard.appendChild(taskFinished);
+    contentDiv.appendChild(taskCard);
+
+    console.log("Task displayed!");
 }
