@@ -1,3 +1,4 @@
+import "./styles/main.css";
 import { loadDOM } from "./loadDOM.js";
 import { ToDo } from "./todoModule.js";
 import { Project } from "./projectModule.js";
@@ -13,7 +14,7 @@ export function gatherFormData() {
 
     let task = new ToDo(title.value, description.value, dueDate.value, priority.value, checklist.value, finished.value);
 
-    console.log("Task created!");
+    console.log("To-do created!");
     return task;
 }
 

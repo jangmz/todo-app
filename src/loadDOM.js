@@ -7,16 +7,22 @@ export function loadDOM() {
     const content = document.createElement("div");
     const sideMenu = document.createElement("div");
     const buttonsArea = document.createElement("div"); // buttons for creating todo and creating project
-    const createTodoButton = document.createElement("button");
+    const newTodoButton = document.createElement("button");
+    const newProjectButton = document.createElement("button");
 
     content.classList.add("content");
     sideMenu.classList.add("side-menu");
     buttonsArea.classList.add("buttons-area");
 
-    createTodoButton.textContent = "Add new task";
-    createTodoButton.addEventListener("click", newTaskDialog);
+    newTodoButton.textContent = "Add new to-do";
+    newTodoButton.addEventListener("click", newTaskDialog);
+    newProjectButton.textContent = "Add new project";
+    newProjectButton.addEventListener("click", () => {
+        console.log("Not yet functional");
+    })
 
-    buttonsArea.appendChild(createTodoButton);
+    buttonsArea.appendChild(newTodoButton);
+    buttonsArea.appendChild(newProjectButton);
 
     sideMenu.appendChild(buttonsArea);
     container.appendChild(sideMenu);
@@ -88,12 +94,12 @@ function generateAddTodoForm(dialog) {
                 input = document.createElement("input");
                 input.type = field.type;
                 // temporary 
-                input.value = "test text field";
+                input.value = "test title";
                 break;
             case "textarea":
                 input = document.createElement("textarea");
                 // temporary 
-                input.value = "test textarea field";
+                input.value = "test description";
                 break;
             case "date":
                 input = document.createElement("input");
@@ -169,7 +175,7 @@ function displayTask(task) {
     taskDueDate.textContent = task.dueDate;
     taskPriority.textContent = task.priority;
     taskSubTask.textContent = task.checklist;
-    taskFinished.textContent = task.finished;
+    taskFinished.textContent = `Finished: ${task.finished}`;
 
     // append to card
     checklist.appendChild(taskSubTask);
@@ -181,5 +187,5 @@ function displayTask(task) {
     taskCard.appendChild(taskFinished);
     contentDiv.appendChild(taskCard);
 
-    console.log("Task displayed!");
+    console.log("To-do displayed!");
 }

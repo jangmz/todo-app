@@ -11,14 +11,6 @@ module.exports = {
         filename: "bundle.js",
         path: path.resolve(__dirname, "dist"),
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: "./src/index.html",
-            filename: "index.html",
-            inject: "head",
-            scriptLoading: "defer",
-        }),
-    ],
     module: {
         rules: [
             {
@@ -27,4 +19,12 @@ module.exports = {
             },
         ],
     },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: "./src/index.html",
+            filename: "index.html",
+            inject: "head",
+            scriptLoading: "defer",
+        }),
+    ],
 };
