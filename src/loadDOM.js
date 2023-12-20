@@ -130,7 +130,7 @@ function generateAddTodoForm() {
     return form;
 }
 
-function displayTask(task) {
+export function displayTask(task) {
 
 
     // display tasks on main content div

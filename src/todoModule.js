@@ -1,4 +1,5 @@
 import { Project } from "./projectModule";
+import { displayTask } from "./loadDOM";
 
 export class ToDo {
     constructor(title, description, dueDate, priority, checklist, projectTitle, finished) {
@@ -29,6 +30,8 @@ export class ToDo {
         let task = new ToDo(title.value, description.value, dueDate.value, priority.value, checklist.value, finished.value);
     
         console.log("Task created!");
+
+        // call displayTask method
         
     }
 }
