@@ -15,9 +15,11 @@ export function gatherFormData() {
 
     console.log("project: " + projectTitle.value);
 
+    // create object from the data
     let todo = new ToDo(title.value, description.value, dueDate.value, priority.value, checklist.value/*, finished.value*/);
     console.log("To-do created!");
 
+    // find which project user chose and add this todo to that project
     MyProjects.forEach(project => {
         if (project.title.toLowerCase() === projectTitle.value) {
             project.addTodoToProject(todo);
@@ -25,17 +27,17 @@ export function gatherFormData() {
         }
     })
     
-    console.log(MyProjects);
+    //console.log(MyProjects);
 
     return todo;
 }
-
-loadDOM();
 
 export const MyProjects = [
     new Project("Other", "default"),
     new Project("Home", "custom")
 ];
 
-console.log("ALL PROJECTS: ");
+loadDOM();
+
+//console.log("ALL PROJECTS: ");
 MyProjects.forEach(project => console.log(project))

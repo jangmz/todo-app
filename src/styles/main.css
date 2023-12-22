@@ -33,13 +33,36 @@ body {
 
 .side-menu {
     width: 250px;
-    height: 100vh;
+    height: 90vh;
     padding: 20px;
     border-right: 1px solid black;
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
+}
+
+.projects-area {
+    margin-left: 15px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.side-project {
+    line-height: 0.6;
+}
+
+.side-project-title {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.side-project-todo {
+    margin: 0;
+    padding: 10px 15px;
 }
 
 .buttons-area {

@@ -1,4 +1,5 @@
 import { gatherFormData } from "./index.js";
+import { MyProjects } from "./index.js";
 //import closeIcon from "./assets/icons/close-circle.svg";
 
 export function loadDOM() {
@@ -8,6 +9,7 @@ export function loadDOM() {
     const content = document.createElement("div");
     const taskCards = document.createElement("div");
     const sideMenu = document.createElement("div");
+    const projectsArea = createProjectsSideMenu(); // where projects will be displayed on the side menu
     const buttonsArea = document.createElement("div"); // buttons for creating todo and creating project
     const newTodoButton = document.createElement("button");
     const newProjectButton = document.createElement("button");
@@ -18,7 +20,6 @@ export function loadDOM() {
     buttonsArea.classList.add("buttons-area");
 
     newTodoButton.textContent = "Add new to-do";
-    //newTodoButton.addEventListener("click", newTaskDialog);
     newTodoButton.addEventListener("click", () => {
         dialog.showModal();
     });
@@ -30,6 +31,7 @@ export function loadDOM() {
     buttonsArea.appendChild(newTodoButton);
     buttonsArea.appendChild(newProjectButton);
 
+    sideMenu.appendChild(projectsArea);
     sideMenu.appendChild(buttonsArea);
     content.appendChild(taskCards);
     container.appendChild(sideMenu);
@@ -151,8 +153,12 @@ function generateAddTodoForm(dialog) {
     // when form is submitted
     form.addEventListener("submit", (e) => {
         e.preventDefault();
+
         // gather all the input data and create a todo object, display todo on the DOM
         displayTask(gatherFormData());
+
+        //refresh the side menu projects and tasks
+        refreshSideMenuProjects();
 
         // after submission, dialog closes
         dialog.close();
@@ -203,4 +209,59 @@ function displayTask(task) {
     contentDiv.appendChild(taskCardsDiv);
 
     console.log("To-do displayed!");
+}
+
+function createProjectsSideMenu() {
+    const projectsAreaDiv = document.createElement("div");
+    projectsAreaDiv.classList.add("projects-area");
+    
+    MyProjects.forEach(project => {
+        let projectDiv = createProjectDivSideMenu(project);
+        projectsAreaDiv.appendChild(projectDiv);
+    })
+    
+    return projectsAreaDiv;
+}
+
+function createProjectDivSideMenu(project) {
+    let projectDiv = document.createElement("div");
+    let projectTitle = document.createElement("p");
+
+    projectDiv.classList.add("side-project");
+    projectDiv.id = project.title.toLowerCase();
+    projectTitle.classList.add("side-project-title");
+
+    projectTitle.textContent = project.title;
+
+    projectDiv.appendChild(projectTitle);
+
+    if (project.tasks.length === 0) {
+        let todo = document.createElement("p");
+        todo.textContent = "No current tasks";
+        todo.style.fontStyle = "italic";
+        projectDiv.appendChild(todo);
+    } else {
+        project.tasks.forEach(task => {
+            let todo = document.createElement("p");
+            todo.textContent = task.title;
+            todo.classList.add("side-project-todo");
+            projectDiv.appendChild(todo);
+        })
+    }
+
+    return projectDiv;
+}
+
+function refreshSideMenuProjects() {
+    const projectsAreaDiv = document.querySelector(".projects-area");
+
+    while (projectsAreaDiv.firstChild) {
+        projectsAreaDiv.removeChild(projectsAreaDiv.firstChild);
+    }
+
+    MyProjects.forEach(project => {
+        let projectDiv = createProjectDivSideMenu(project);
+        projectsAreaDiv.appendChild(projectDiv);
+    })
+
 }
