@@ -1,10 +1,11 @@
-import { gatherFormData } from "./index.js";
+import { gatherFormDataTodo, saveFormDataProject } from "./index.js";
 import { MyProjects } from "./index.js";
 //import closeIcon from "./assets/icons/close-circle.svg";
 
 export function loadDOM() {
     const container = document.querySelector(".container");
-    const dialog = createTaskDialog();
+    const dialog = createTaskDialog(); // dialog for a new todo
+    const dialog2 = createProjectDialog(); // dialog for a new project
 
     const content = document.createElement("div");
     const taskCards = document.createElement("div");
@@ -25,7 +26,7 @@ export function loadDOM() {
     });
     newProjectButton.textContent = "Add new project";
     newProjectButton.addEventListener("click", () => {
-        console.log("Not yet functional");
+        dialog2.showModal();
     })
 
     buttonsArea.appendChild(newTodoButton);
@@ -56,7 +57,6 @@ function createTaskDialog() {
     //dialogCloseIcon.src = closeIcon; 
     dialogCloseIcon.src = "#";
     
-    // closing the dialog window -> does not work yet
     dialogCloseIcon.addEventListener("click", () => {
         dialog.close();
     });
@@ -78,6 +78,7 @@ function generateAddTodoForm(dialog) {
     const form = document.createElement("form");
     form.id = "addTodo";
 
+    // fields in form
     const fields = [
         { label: "Title", type: "text", name: "title", required: true },
         { label: "Description", type: "textarea", name: "description" },
@@ -88,6 +89,7 @@ function generateAddTodoForm(dialog) {
         //{ label: "Finished", type: "checkbox", name: "finished" }
     ];
 
+    // submit button
     const submitButton = document.createElement("button");
     submitButton.type = "submit";
     submitButton.textContent = "Create To-Do";
@@ -140,33 +142,115 @@ function generateAddTodoForm(dialog) {
 
         input.id = field.name;
         input.name = field.name;
-
-        if (field.required) {
-            input.required = true;
-        }
+        input.required = field.required;
 
         fieldDiv.appendChild(label);
         fieldDiv.appendChild(input);
         form.appendChild(fieldDiv);
     });
 
+    form.appendChild(submitButton);
+
     // when form is submitted
     form.addEventListener("submit", (e) => {
         e.preventDefault();
 
         // gather all the input data and create a todo object, display todo on the DOM
-        displayTask(gatherFormData());
+        displayTask(gatherFormDataTodo());
 
         //refresh the side menu projects and tasks
         refreshSideMenuProjects();
 
-        // after submission, dialog closes
         dialog.close();
-    })
+    });
+
+    console.log("To-do form created");
+    return form;
+}
+
+function createProjectDialog() {
+    const container = document.querySelector(".container");
+    const dialog = document.createElement("dialog");
+    const modalDiv = document.createElement("div");
+    const dialogHead = document.createElement("div");
+    const dialogTitle = document.createElement("h1");
+    const dialogCloseIcon = document.createElement("img");
+
+    modalDiv.classList.add("modal");
+    dialogHead.classList.add("modal-head");
+    dialogTitle.textContent = "New Project";
+    dialogCloseIcon.classList.add("close-icon");
+    dialogCloseIcon.id = "close";
+    dialogCloseIcon.src = "#";
+
+    dialogCloseIcon.addEventListener("click", () => {
+        dialog.close();
+    });
+
+    dialogHead.appendChild(dialogTitle);
+    dialogHead.appendChild(dialogCloseIcon);
+    modalDiv.appendChild(dialogHead);
+
+    const addProjectForm = generateAddProjectForm(dialog);
+    modalDiv.appendChild(addProjectForm);
+
+    dialog.appendChild(modalDiv);
+    container.appendChild(dialog);
+
+    return dialog;
+}
+
+function generateAddProjectForm(dialog) {
+    const form = document.createElement("form");
+    form.id = "addProject";
+
+    // fields in form
+    const fields = [
+        { label: "Project title", type: "text", name: "title", required: true }
+    ];
+
+    // submit button
+    const submitButton = document.createElement("button");
+    submitButton.type = "submit";
+    submitButton.textContent = "Create project";
+
+    // form element creation
+    fields.forEach(field => {
+        // create div + label
+        const fieldDiv = document.createElement("div");
+        const label = document.createElement("label");
+
+        fieldDiv.classList.add("form-input");
+        label.textContent = field.label;
+
+        let input = document.createElement("input");
+        input.type = field.type;
+        input.id = field.name;
+        input.name = field.name;
+        input.required = field.required;
+
+        // temporary value
+        input.value = "Test project";
+
+        fieldDiv.appendChild(label);
+        fieldDiv.appendChild(input);
+        form.appendChild(fieldDiv);
+    });
 
     form.appendChild(submitButton);
 
-    console.log("Created Form")
+    // form submission
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        // gather input data and create project, display project on the sidemenu
+        saveFormDataProject(); // on index.js -> add project to all projects
+        refreshSideMenuProjects();
+
+        dialog.close()
+    });
+
+    console.log("Project form created");
     return form;
 }
 

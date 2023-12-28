@@ -3,7 +3,7 @@ import { loadDOM } from "./loadDOM.js";
 import { ToDo } from "./todoModule.js";
 import { Project } from "./projectModule.js";
 
-export function gatherFormData() {
+export function gatherFormDataTodo() {
     //gather data from the dialog inputs
     let title = document.getElementById("title");
     let description = document.getElementById("description");
@@ -32,6 +32,10 @@ export function gatherFormData() {
     return todo;
 }
 
+export function saveFormDataProject() {
+    // parse data, add to my projects
+}
+
 export const MyProjects = [
     new Project("Other", "default"),
     new Project("Home", "custom")
@@ -41,3 +45,15 @@ loadDOM();
 
 //console.log("ALL PROJECTS: ");
 MyProjects.forEach(project => console.log(project))
+
+/*
+
+    [] create new project -> finish generateAddProjectForm(dialog) function
+    [] display to do on the main section when clicked (display all properties in correct format)
+    [] change todo to completed (add button)
+    [] delete a todo (add button)
+    [] change todo priority
+    [] change todo date
+    [] add/strikethrough additional sub todos
+
+*/
