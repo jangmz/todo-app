@@ -15,7 +15,7 @@ export function gatherFormDataTodo() {
     //let finished = document.getElementById("finished");
 
     // create object from the data
-    let todo = new ToDo(title.value, description.value, dueDate.value, priority.value, checklist.value/*, finished.value*/);
+    let todo = new ToDo(title.value, description.value, dueDate.value, priority.value, checklist.value, projectTitle.value/*, finished.value*/);
 
     // find which project user chose and add this todo to that project
     MyProjects.forEach(project => {
@@ -32,12 +32,12 @@ export function gatherFormDataTodo() {
 // parse data from form submission (project)
 export function saveFormDataProject() {
     // parse data, add to my projects
-    const projectTitle = document.getElementById("title");
+    const projectTitle = document.getElementById("project-title");
 
     let project = new Project(projectTitle.value, "custom");
 
     MyProjects.push(project);
-    console.log("New project created.");
+    console.log("New project created." + project.title);
 }
 
 export const MyProjects = [
@@ -54,8 +54,9 @@ MyProjects.forEach(project => console.log(project))
 
     [x] create new project
     [x] newly created project are shown on new task entry selection list
-    [] both new project and new todo assigned to the new project is displayed in the side menu
-    [] display to do on the main section when clicked (display all properties in correct format)
+    [x] both new project and new todo assigned to the new project is displayed in the side menu
+    [] display to do on the main section when clicked (display all properties in correct format) 
+        function in projectModule, called in loadDOM
     [] change todo to completed (add button)
     [] delete a todo (add button)
     [] change todo priority

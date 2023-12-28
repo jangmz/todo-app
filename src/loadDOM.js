@@ -173,6 +173,7 @@ function generateAddTodoForm(dialog) {
         refreshSideMenuProjects();
 
         dialog.close();
+        //form.reset(); -> enable when finished
     });
 
     console.log("To-do form created");
@@ -218,7 +219,7 @@ function generateAddProjectForm(dialog) {
 
     // fields in form
     const fields = [
-        { label: "Project title", type: "text", name: "title", required: true }
+        { label: "Project title", type: "text", name: "project-title", required: true }
     ];
 
     // submit button
@@ -269,9 +270,8 @@ function generateAddProjectForm(dialog) {
     return form;
 }
 
-function displayTask(task) {
+export function displayTask(task) {
     // display tasks on main content div
-    const contentDiv = document.querySelector(".content");
     const taskCardsDiv = document.querySelector(".task-cards");
     
     // create elements for the task
@@ -305,7 +305,6 @@ function displayTask(task) {
     //taskCard.appendChild(taskFinished);
 
     taskCardsDiv.appendChild(taskCard);
-    contentDiv.appendChild(taskCardsDiv);
 
     console.log("To-do displayed!");
 }
@@ -328,9 +327,17 @@ function createProjectDivSideMenu(project) {
 
     projectDiv.classList.add("side-project");
     projectDiv.id = project.title.toLowerCase();
-    projectTitle.classList.add("side-project-title");
 
+    projectTitle.classList.add("side-project-title");
     projectTitle.textContent = project.title;
+    projectTitle.addEventListener("click", () => {
+        console.log("Clicked on project -> " + project.title); // displayTasksToDOM();
+        console.log("Clear current main content.");
+        clearMainContent();
+        console.log("Display tasks from Project");
+        project.displayTasksToDOM();
+    })
+
 
     projectDiv.appendChild(projectTitle);
 
@@ -373,4 +380,14 @@ function refreshFormOptions() {
     newOptionElement.textContent = MyProjects[MyProjects.length - 1].title;
 
     dialogProjectOptions.appendChild(newOptionElement);
+}
+
+function clearMainContent() {
+    const taskCardsDiv = document.querySelector(".task-cards");
+
+    while (taskCardsDiv.firstChild) {
+        taskCardsDiv.removeChild(taskCardsDiv.firstChild);
+    }
+
+    console.log("Content cleared.");
 }
