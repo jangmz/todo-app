@@ -49,6 +49,7 @@ function createTaskDialog() {
     const dialogTitle = document.createElement("h1");
     const dialogCloseIcon = document.createElement("img");
 
+    dialog.id = "todo-dialog";
     modalDiv.classList.add("modal");
     dialogHead.classList.add("modal-head");
     dialogTitle.textContent = "New Task Entry";
@@ -78,14 +79,16 @@ function generateAddTodoForm(dialog) {
     const form = document.createElement("form");
     form.id = "addTodo";
 
+    const priorityChoice = ["High", "Medium", "Low"]
+
     // fields in form
     const fields = [
         { label: "Title", type: "text", name: "title", required: true },
         { label: "Description", type: "textarea", name: "description" },
         { label: "Due Date", type: "date", name: "dueDate", required: true },
-        { label: "Priority", type: "select", name: "priority", options: ["High", "Medium", "Low"], required: true },
+        { label: "Priority", type: "select", name: "priority", options: priorityChoice, required: true },
         { label: "Check list", type: "text", name: "checklist" },
-        { label: "Project title", type: "select", name: "projectTitle", options: ["Other", "Home"] },
+        { label: "Project title", type: "select", name: "projectTitle", options: MyProjects },
         //{ label: "Finished", type: "checkbox", name: "finished" }
     ];
 
@@ -126,12 +129,20 @@ function generateAddTodoForm(dialog) {
                 break;
             case "select":
                 input = document.createElement("select");
+                
                 field.options.forEach(option => {
                     const optionElement = document.createElement("option");
-                    optionElement.value = option.toLowerCase();
-                    optionElement.textContent = option;
+
+                    if (typeof option === "object") {
+                        optionElement.value = option.title.toLowerCase();
+                        optionElement.textContent = option.title;
+                    } else {
+                        optionElement.value = option.toLowerCase();
+                        optionElement.textContent = option;
+                    }
                     input.appendChild(optionElement);
-                });
+                    
+                });                
                 break;
             /*case "checkbox":
                 input = document.createElement("input");
@@ -176,6 +187,7 @@ function createProjectDialog() {
     const dialogTitle = document.createElement("h1");
     const dialogCloseIcon = document.createElement("img");
 
+    dialog.id = "project-dialog";
     modalDiv.classList.add("modal");
     dialogHead.classList.add("modal-head");
     dialogTitle.textContent = "New Project";
@@ -244,10 +256,13 @@ function generateAddProjectForm(dialog) {
         e.preventDefault();
 
         // gather input data and create project, display project on the sidemenu
-        saveFormDataProject(); // on index.js -> add project to all projects
+        saveFormDataProject();
         refreshSideMenuProjects();
 
-        dialog.close()
+        // refresh todo form project selection
+        refreshFormOptions();
+
+        dialog.close();
     });
 
     console.log("Project form created");
@@ -348,4 +363,14 @@ function refreshSideMenuProjects() {
         projectsAreaDiv.appendChild(projectDiv);
     })
 
+}
+
+function refreshFormOptions() {
+    const dialogProjectOptions = document.getElementById("projectTitle");
+    const newOptionElement = document.createElement("option");
+    
+    newOptionElement.value = MyProjects[MyProjects.length - 1].title.toLowerCase();
+    newOptionElement.textContent = MyProjects[MyProjects.length - 1].title;
+
+    dialogProjectOptions.appendChild(newOptionElement);
 }

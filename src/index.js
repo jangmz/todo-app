@@ -3,6 +3,7 @@ import { loadDOM } from "./loadDOM.js";
 import { ToDo } from "./todoModule.js";
 import { Project } from "./projectModule.js";
 
+// parse data from form submission (todo)
 export function gatherFormDataTodo() {
     //gather data from the dialog inputs
     let title = document.getElementById("title");
@@ -13,11 +14,8 @@ export function gatherFormDataTodo() {
     let projectTitle = document.getElementById("projectTitle");
     //let finished = document.getElementById("finished");
 
-    console.log("project: " + projectTitle.value);
-
     // create object from the data
     let todo = new ToDo(title.value, description.value, dueDate.value, priority.value, checklist.value/*, finished.value*/);
-    console.log("To-do created!");
 
     // find which project user chose and add this todo to that project
     MyProjects.forEach(project => {
@@ -26,19 +24,25 @@ export function gatherFormDataTodo() {
             console.log(`To-do added to ${project.title.toUpperCase()}`);
         }
     })
-    
-    //console.log(MyProjects);
 
+    console.log("New To-do created.");
     return todo;
 }
 
+// parse data from form submission (project)
 export function saveFormDataProject() {
     // parse data, add to my projects
+    const projectTitle = document.getElementById("title");
+
+    let project = new Project(projectTitle.value, "custom");
+
+    MyProjects.push(project);
+    console.log("New project created.");
 }
 
 export const MyProjects = [
     new Project("Other", "default"),
-    new Project("Home", "custom")
+    new Project("Home renovation", "custom")
 ];
 
 loadDOM();
@@ -48,7 +52,9 @@ MyProjects.forEach(project => console.log(project))
 
 /*
 
-    [] create new project -> finish generateAddProjectForm(dialog) function
+    [x] create new project
+    [x] newly created project are shown on new task entry selection list
+    [] both new project and new todo assigned to the new project is displayed in the side menu
     [] display to do on the main section when clicked (display all properties in correct format)
     [] change todo to completed (add button)
     [] delete a todo (add button)
