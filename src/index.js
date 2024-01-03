@@ -27,7 +27,7 @@ export function gatherFormDataTodo() {
         }
     })
 
-    MyProjects.forEach(project => console.log(project))
+    //MyProjects.forEach(project => console.log(project))
     console.log("New To-do created.");
     return todo;
 }
@@ -64,6 +64,7 @@ MyProjects.forEach(project => console.log(project))
     - changed "finished" property to "done"
     - added visibility to "Done" property on the task card
     - task can be marked as "Done" and background changes
+    [] change todo "done" status in Project array
     [] delete a todo (add button)
     [] change todo priority
     [] change todo date
