@@ -12,19 +12,22 @@ export function gatherFormDataTodo() {
     let priority = document.getElementById("priority");
     let checklist = document.getElementById("checklist");
     let projectTitle = document.getElementById("projectTitle");
-    //let finished = document.getElementById("finished");
-
-    // create object from the data
-    let todo = new ToDo(title.value, description.value, dueDate.value, priority.value, checklist.value, projectTitle.value/*, finished.value*/);
+    let done = false;
+    
+    let todo;
 
     // find which project user chose and add this todo to that project
     MyProjects.forEach(project => {
         if (project.title.toLowerCase() === projectTitle.value) {
+            // create object from the data
+            todo = new ToDo(title.value, description.value, dueDate.value, priority.value, checklist.value, project, done);
+            
             project.addTodoToProject(todo);
             console.log(`To-do added to ${project.title.toUpperCase()}`);
         }
     })
 
+    MyProjects.forEach(project => console.log(project))
     console.log("New To-do created.");
     return todo;
 }
@@ -55,12 +58,16 @@ MyProjects.forEach(project => console.log(project))
     [x] create new project
     [x] newly created project are shown on new task entry selection list
     [x] both new project and new todo assigned to the new project is displayed in the side menu
-    [] display to do on the main section when clicked (display all properties in correct format) 
+    [x] display to-do on the main section when clicked (display all properties in correct format) 
         function in projectModule, called in loadDOM
-    [] change todo to completed (add button)
+    [x] change todo to completed (add checkbox)
+    - changed "finished" property to "done"
+    - added visibility to "Done" property on the task card
+    - task can be marked as "Done" and background changes
     [] delete a todo (add button)
     [] change todo priority
     [] change todo date
-    [] add/strikethrough additional sub todos
-
+    [] strikethrough additional sub todos
+    [] button to add additional sub todos later
+    [] include local storage instead of arrays
 */

@@ -89,7 +89,7 @@ function generateAddTodoForm(dialog) {
         { label: "Priority", type: "select", name: "priority", options: priorityChoice, required: true },
         { label: "Check list", type: "text", name: "checklist" },
         { label: "Project title", type: "select", name: "projectTitle", options: MyProjects },
-        //{ label: "Finished", type: "checkbox", name: "finished" }
+        //{ label: "Done", type: "checkbox", name: "finished" }
     ];
 
     // submit button
@@ -282,10 +282,13 @@ export function displayTask(task) {
     const taskPriority = document.createElement("h4");
     const checklist = document.createElement("div");
     const taskSubTask = document.createElement("p"); // items from checklist
-    //const taskFinished = document.createElement("h4");
+    const taskDoneDiv = document.createElement("div");
+    const taskDone = document.createElement("input");
+    const taskDoneLabel = document.createElement("label");
 
     // add class for css
     taskCard.classList.add("task-card");
+    taskDoneDiv.classList.add("task-done");
 
     // add values to elements
     taskTitle.textContent = task.title;
@@ -293,7 +296,34 @@ export function displayTask(task) {
     taskDueDate.textContent = task.dueDate;
     taskPriority.textContent = task.priority;
     taskSubTask.textContent = task.checklist;
-    //taskFinished.textContent = `Finished: ${task.finished}`;
+    taskDone.type = "checkbox";
+    taskDone.name = "done";
+    taskDone.id = "done";
+    if (task.done === false) {
+        taskDone.value = "unchecked";
+    } else {
+        taskDone.value = "checked";
+    }
+    taskDoneLabel.textContent = "Done";
+
+    // event listener for "done" checkbox
+    taskDone.addEventListener("change", (e) => {
+        task.doneValue = e.target.checked;
+        //console.log("Checkbox value: " + e.target.checked);
+        console.log("Task done: " + task.done);
+
+        // also change todo done status in Project array
+
+        // change background color to gray if task is done
+        if (task.done === true) {
+            taskCard.style.backgroundColor = "gray";
+        } else {
+            taskCard.style.backgroundColor = "#90ee90";
+        }
+    })
+
+    taskDoneDiv.appendChild(taskDone);
+    taskDoneDiv.appendChild(taskDoneLabel);
 
     // append to card
     checklist.appendChild(taskSubTask);
@@ -302,7 +332,7 @@ export function displayTask(task) {
     taskCard.appendChild(taskDueDate);
     taskCard.appendChild(taskPriority);
     taskCard.appendChild(checklist);
-    //taskCard.appendChild(taskFinished);
+    taskCard.appendChild(taskDoneDiv);
 
     taskCardsDiv.appendChild(taskCard);
 
