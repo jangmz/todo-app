@@ -27,7 +27,7 @@ export function gatherFormDataTodo() {
         }
     })
 
-    //MyProjects.forEach(project => console.log(project))
+    logData();
     console.log("New To-do created.");
     return todo;
 }
@@ -43,15 +43,19 @@ export function saveFormDataProject() {
     console.log("New project created." + project.title);
 }
 
+export function logData() {
+    console.log("====================PROJECTS======================");
+    MyProjects.forEach(project => console.log(project))
+    console.log("==================================================");
+} 
+
 export const MyProjects = [
     new Project("Other", "default"),
     new Project("Home renovation", "custom")
 ];
 
 loadDOM();
-
-//console.log("ALL PROJECTS: ");
-MyProjects.forEach(project => console.log(project))
+logData();
 
 /*
 

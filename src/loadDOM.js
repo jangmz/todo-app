@@ -1,4 +1,4 @@
-import { gatherFormDataTodo, saveFormDataProject } from "./index.js";
+import { gatherFormDataTodo, logData, saveFormDataProject } from "./index.js";
 import { MyProjects } from "./index.js";
 //import closeIcon from "./assets/icons/close-circle.svg";
 
@@ -300,19 +300,18 @@ export function displayTask(task) {
     taskDone.name = "done";
     taskDone.id = "done";
     if (task.done === false) {
-        taskDone.value = "unchecked";
+        taskDone.checked = false;
+        taskCard.style.backgroundColor = "#90ee90";
     } else {
-        taskDone.value = "checked";
+        taskDone.checked = true;
+        taskCard.style.backgroundColor = "gray";
     }
     taskDoneLabel.textContent = "Done";
 
     // event listener for "done" checkbox
     taskDone.addEventListener("change", (e) => {
         task.doneValue = e.target.checked;
-        //console.log("Checkbox value: " + e.target.checked);
         console.log("Task done: " + task.done);
-
-        // also change todo done status in Project array
 
         // change background color to gray if task is done
         if (task.done === true) {
@@ -320,6 +319,8 @@ export function displayTask(task) {
         } else {
             taskCard.style.backgroundColor = "#90ee90";
         }
+
+        logData();
     })
 
     taskDoneDiv.appendChild(taskDone);
@@ -351,6 +352,7 @@ function createProjectsSideMenu() {
     return projectsAreaDiv;
 }
 
+// displays projects on the side menu and calls the function to display tasks of a current project
 function createProjectDivSideMenu(project) {
     let projectDiv = document.createElement("div");
     let projectTitle = document.createElement("p");

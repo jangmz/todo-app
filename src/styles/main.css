@@ -92,7 +92,6 @@ body {
 }
 
 .task-card {
-    background-color: #90ee90;
     padding: 20px;
     border: 1px solid black;
     flex: auto;
