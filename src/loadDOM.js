@@ -8,6 +8,7 @@ export function loadDOM() {
     const dialog2 = createProjectDialog(); // dialog for a new project
 
     const content = document.createElement("div");
+    const contentHeading = document.createElement("div");
     const taskCards = document.createElement("div");
     const sideMenu = document.createElement("div");
     const projectsArea = createProjectsSideMenu(); // where projects will be displayed on the side menu
@@ -16,6 +17,7 @@ export function loadDOM() {
     const newProjectButton = document.createElement("button");
 
     content.classList.add("content");
+    contentHeading.classList.add("content-heading");
     taskCards.classList.add("task-cards");
     sideMenu.classList.add("side-menu");
     buttonsArea.classList.add("buttons-area");
@@ -34,6 +36,7 @@ export function loadDOM() {
 
     sideMenu.appendChild(projectsArea);
     sideMenu.appendChild(buttonsArea);
+    content.appendChild(contentHeading);
     content.appendChild(taskCards);
     container.appendChild(sideMenu);
     container.appendChild(content);
@@ -374,14 +377,11 @@ function createProjectDivSideMenu(project) {
 
     projectTitle.classList.add("side-project-title");
     projectTitle.textContent = project.title;
-    projectTitle.addEventListener("click", () => {
-        console.log("Clicked on project -> " + project.title); 
-        console.log("Clear current main content.");
-        clearMainContent();
-        console.log("Display tasks from Project");
-        project.displayTasksToDOM();
-    })
 
+    projectTitle.addEventListener("click", () => {
+        console.log(`Clicked on project -> ${project.title}`); 
+        displayProjectTasks(project);
+    })
 
     projectDiv.appendChild(projectTitle);
 
@@ -400,6 +400,29 @@ function createProjectDivSideMenu(project) {
     }
 
     return projectDiv;
+}
+
+// displays all the content from a project: title, delete project, tasks
+function displayProjectTasks(project) {
+    //clear displayed content
+    clearMainContent();
+
+    // show project title on main content area
+    const contentHeading = document.querySelector(".content-heading");
+    const projectHeading = document.createElement("h1");
+    const deleteProjectBtn = document.createElement("button");
+
+    projectHeading.classList.add("project-heading-title");
+    deleteProjectBtn.classList.add("delete-project-btn");
+
+    projectHeading.textContent = project.title;
+    deleteProjectBtn.textContent = "Delete project";
+
+    contentHeading.appendChild(projectHeading);
+    contentHeading.appendChild(deleteProjectBtn);
+    
+    project.displayTasksToDOM();
+    console.log("Tasks of the project displayed.");
 }
 
 function refreshSideMenuProjects() {
@@ -427,8 +450,15 @@ function refreshFormOptions() {
 }
 
 function clearMainContent() {
+    const contentHeading = document.querySelector(".content-heading");
     const taskCardsDiv = document.querySelector(".task-cards");
 
+    // clears content heading
+    while (contentHeading.firstChild) {
+        contentHeading.removeChild(contentHeading.firstChild);
+    }
+
+    // clears all the tasks
     while (taskCardsDiv.firstChild) {
         taskCardsDiv.removeChild(taskCardsDiv.firstChild);
     }
