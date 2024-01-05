@@ -68,8 +68,9 @@ logData();
     - changed "finished" property to "done"
     - added visibility to "Done" property on the task card
     - task can be marked as "Done" and background changes
-    [] change todo "done" status in Project array
-    [] delete a todo (add button)
+    [x] change todo "done" status in Project array
+    [] display the "close" icon in dialog
+    [x] delete a todo (add button)
     [] change todo priority
     [] change todo date
     [] strikethrough additional sub todos

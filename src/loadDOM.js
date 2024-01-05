@@ -1,6 +1,6 @@
 import { gatherFormDataTodo, logData, saveFormDataProject } from "./index.js";
 import { MyProjects } from "./index.js";
-//import closeIcon from "./assets/icons/close-circle.svg";
+import closeIcon from "./assets/icons/close-circle.svg";
 
 export function loadDOM() {
     const container = document.querySelector(".container");
@@ -55,8 +55,8 @@ function createTaskDialog() {
     dialogTitle.textContent = "New Task Entry";
     dialogCloseIcon.classList.add("close-icon");
     dialogCloseIcon.id = "close";
-    //dialogCloseIcon.src = closeIcon; 
-    dialogCloseIcon.src = "#";
+    dialogCloseIcon.src = closeIcon; 
+    //dialogCloseIcon.src = "/src/assets/icons/close-circle.svg";
     
     dialogCloseIcon.addEventListener("click", () => {
         dialog.close();
@@ -285,6 +285,7 @@ export function displayTask(task) {
     const taskDoneDiv = document.createElement("div");
     const taskDone = document.createElement("input");
     const taskDoneLabel = document.createElement("label");
+    const deleteTaskBtn = document.createElement("button");
 
     // add class for css
     taskCard.classList.add("task-card");
@@ -307,6 +308,8 @@ export function displayTask(task) {
         taskCard.style.backgroundColor = "gray";
     }
     taskDoneLabel.textContent = "Done";
+    deleteTaskBtn.name = task.title;
+    deleteTaskBtn.textContent = "Delete To-do";
 
     // event listener for "done" checkbox
     taskDone.addEventListener("change", (e) => {
@@ -323,6 +326,14 @@ export function displayTask(task) {
         logData();
     })
 
+    // event listener for task delete button
+    deleteTaskBtn.addEventListener("click", () => {
+        // call function to delete a task
+        task.project.deleteTaskFromProject(task.title);
+        refreshContent();
+        task.project.displayTasksToDOM();
+    });
+
     taskDoneDiv.appendChild(taskDone);
     taskDoneDiv.appendChild(taskDoneLabel);
 
@@ -334,6 +345,7 @@ export function displayTask(task) {
     taskCard.appendChild(taskPriority);
     taskCard.appendChild(checklist);
     taskCard.appendChild(taskDoneDiv);
+    taskCard.appendChild(deleteTaskBtn);
 
     taskCardsDiv.appendChild(taskCard);
 
@@ -363,7 +375,7 @@ function createProjectDivSideMenu(project) {
     projectTitle.classList.add("side-project-title");
     projectTitle.textContent = project.title;
     projectTitle.addEventListener("click", () => {
-        console.log("Clicked on project -> " + project.title); // displayTasksToDOM();
+        console.log("Clicked on project -> " + project.title); 
         console.log("Clear current main content.");
         clearMainContent();
         console.log("Display tasks from Project");
@@ -422,4 +434,12 @@ function clearMainContent() {
     }
 
     console.log("Content cleared.");
+}
+
+function refreshContent() {
+    // refresh task list on the side menu
+    refreshSideMenuProjects();
+
+    // clear all current tasks from main content
+    clearMainContent();
 }
