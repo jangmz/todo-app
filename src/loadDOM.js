@@ -410,16 +410,22 @@ function displayProjectTasks(project) {
     // show project title on main content area
     const contentHeading = document.querySelector(".content-heading");
     const projectHeading = document.createElement("h1");
-    const deleteProjectBtn = document.createElement("button");
+    
 
     projectHeading.classList.add("project-heading-title");
-    deleteProjectBtn.classList.add("delete-project-btn");
+    
 
     projectHeading.textContent = project.title;
-    deleteProjectBtn.textContent = "Delete project";
 
+    if (project.type === "custom") {
+        const deleteProjectBtn = document.createElement("button");
+        deleteProjectBtn.classList.add("delete-project-btn");
+        deleteProjectBtn.textContent = "Delete project";
+        deleteProjectBtn.addEventListener("click", () => deleteProject(project));
+        contentHeading.appendChild(deleteProjectBtn);
+    }
+    
     contentHeading.appendChild(projectHeading);
-    contentHeading.appendChild(deleteProjectBtn);
     
     project.displayTasksToDOM();
     console.log("Tasks of the project displayed.");
@@ -472,4 +478,8 @@ function refreshContent() {
 
     // clear all current tasks from main content
     clearMainContent();
+}
+
+function deleteProject() {
+    
 }

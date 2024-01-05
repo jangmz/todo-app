@@ -70,7 +70,8 @@ logData();
     - task can be marked as "Done" and background changes
     [x] change todo "done" status in Project array
     [] display the "close" icon in dialog
-    [x] delete a todo (add button)
+    [x] delete a todo (button)
+    [] delete project (button) -> deleteProject function in loadDOM
     [] change todo priority
     [] change todo date
     [] strikethrough additional sub todos
