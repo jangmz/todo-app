@@ -1,7 +1,8 @@
-import { gatherFormDataTodo, logData, saveFormDataProject } from "./index.js";
+import { gatherFormDataTodo, logData, saveFormDataProject, deleteProject } from "./index.js";
 import { MyProjects } from "./index.js";
 import closeIcon from "./assets/icons/close-circle.svg";
 
+// loads the initial HTML
 export function loadDOM() {
     const container = document.querySelector(".container");
     const dialog = createTaskDialog(); // dialog for a new todo
@@ -44,6 +45,7 @@ export function loadDOM() {
     console.log("DOM loaded");
 }
 
+// generates HTML dialog for adding new task
 function createTaskDialog() {
     const container = document.querySelector(".container");
     const dialog = document.createElement("dialog");
@@ -78,6 +80,7 @@ function createTaskDialog() {
     return dialog;
 }
 
+// generates a form for adding new todo
 function generateAddTodoForm(dialog) {
     const form = document.createElement("form");
     form.id = "addTodo";
@@ -183,6 +186,7 @@ function generateAddTodoForm(dialog) {
     return form;
 }
 
+// generates HTML dialog for adding new project
 function createProjectDialog() {
     const container = document.querySelector(".container");
     const dialog = document.createElement("dialog");
@@ -216,6 +220,7 @@ function createProjectDialog() {
     return dialog;
 }
 
+// generates a form for adding a project
 function generateAddProjectForm(dialog) {
     const form = document.createElement("form");
     form.id = "addProject";
@@ -273,6 +278,7 @@ function generateAddProjectForm(dialog) {
     return form;
 }
 
+// displays todo on the main content area
 export function displayTask(task) {
     // display tasks on main content div
     const taskCardsDiv = document.querySelector(".task-cards");
@@ -355,6 +361,7 @@ export function displayTask(task) {
     console.log("To-do displayed!");
 }
 
+// displays all projects and tasks of a project on the side menu
 function createProjectsSideMenu() {
     const projectsAreaDiv = document.createElement("div");
     projectsAreaDiv.classList.add("projects-area");
@@ -414,7 +421,6 @@ function displayProjectTasks(project) {
 
     projectHeading.classList.add("project-heading-title");
     
-
     projectHeading.textContent = project.title;
 
     if (project.type === "custom") {
@@ -431,6 +437,7 @@ function displayProjectTasks(project) {
     console.log("Tasks of the project displayed.");
 }
 
+// refreshes the list of projects and tasks on the side menu
 function refreshSideMenuProjects() {
     const projectsAreaDiv = document.querySelector(".projects-area");
 
@@ -445,16 +452,32 @@ function refreshSideMenuProjects() {
 
 }
 
+// adds project option to the form when new project is created
 function refreshFormOptions() {
     const dialogProjectOptions = document.getElementById("projectTitle");
-    const newOptionElement = document.createElement("option");
-    
+
+    // clears the current options
+    while (dialogProjectOptions.firstChild) {
+        dialogProjectOptions.removeChild(dialogProjectOptions.firstChild);
+    }
+
+    // goes through MyProjects array and displays all active projects
+    MyProjects.forEach(project => {
+        let newOptionElement = document.createElement("option");
+        newOptionElement.value = project.title.toLowerCase();
+        newOptionElement.textContent = project.title;
+        dialogProjectOptions.appendChild(newOptionElement);
+    });
+
+    /*
     newOptionElement.value = MyProjects[MyProjects.length - 1].title.toLowerCase();
     newOptionElement.textContent = MyProjects[MyProjects.length - 1].title;
-
+    
     dialogProjectOptions.appendChild(newOptionElement);
+    */
 }
 
+// clear the main content
 function clearMainContent() {
     const contentHeading = document.querySelector(".content-heading");
     const taskCardsDiv = document.querySelector(".task-cards");
@@ -472,14 +495,14 @@ function clearMainContent() {
     console.log("Content cleared.");
 }
 
-function refreshContent() {
+// refresh side menu and clear main content
+export function refreshContent() {
     // refresh task list on the side menu
     refreshSideMenuProjects();
 
+    // updates the form project options for adding new todo
+    refreshFormOptions();
+
     // clear all current tasks from main content
     clearMainContent();
-}
-
-function deleteProject() {
-    
 }

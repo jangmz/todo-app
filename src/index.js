@@ -1,5 +1,5 @@
 import "./styles/main.css";
-import { loadDOM } from "./loadDOM.js";
+import { loadDOM, refreshContent } from "./loadDOM.js";
 import { ToDo } from "./todoModule.js";
 import { Project } from "./projectModule.js";
 
@@ -43,13 +43,21 @@ export function saveFormDataProject() {
     console.log("New project created." + project.title);
 }
 
+// default display of all projects
 export function logData() {
     console.log("====================PROJECTS======================");
     MyProjects.forEach(project => console.log(project))
     console.log("==================================================");
 } 
 
-export const MyProjects = [
+export function deleteProject(projectForDelete) {
+    MyProjects = MyProjects.filter(project => project.title !== projectForDelete.title);
+    console.log(`Project deleted: ${projectForDelete.title}`);
+    logData();
+    refreshContent();
+}
+
+export let MyProjects = [
     new Project("Other", "default"),
     new Project("Home renovation", "custom")
 ];
@@ -71,7 +79,9 @@ logData();
     [x] change todo "done" status in Project array
     [] display the "close" icon in dialog
     [x] delete a todo (button)
-    [] delete project (button) -> deleteProject function in loadDOM
+    [x] delete project (button)
+    [] view todos in each project but (title and due date only)
+    [] expand a single todo to see/edit details (dialog box)
     [] change todo priority
     [] change todo date
     [] strikethrough additional sub todos
