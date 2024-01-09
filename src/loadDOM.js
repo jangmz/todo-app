@@ -150,11 +150,6 @@ function generateAddTodoForm(dialog) {
                     
                 });                
                 break;
-            /*case "checkbox":
-                input = document.createElement("input");
-                input.type = "checkbox";
-                input.value = "checked";
-                break;*/
         }
 
         input.id = field.name;
@@ -176,7 +171,12 @@ function generateAddTodoForm(dialog) {
         displayTask(gatherFormDataTodo());
 
         //refresh the side menu projects and tasks
+        console.log( e.target.projectTitle.value);
         refreshSideMenuProjects();
+
+        // display content of the project you just added a task to
+        // parameter is the project object that compared to the project title you added a task to
+        displayProjectTasks(MyProjects.filter(project => project.title.toLowerCase() === e.target.projectTitle.value)[0]);
 
         dialog.close();
         //form.reset(); -> enable when finished
