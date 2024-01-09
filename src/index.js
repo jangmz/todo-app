@@ -80,8 +80,8 @@ logData();
     [] display the "close" icon in dialog
     [x] delete a todo (button)
     [x] delete project (button)
-    [] view todos in each project but (title and due date only)
-    [] expand a single todo to see/edit details (dialog box)
+    [x] view todos in each project (title and due date only)
+    [] expand a single todo to see/edit details (dialog box) -> loadDOM.js (row 372)
     [] change todo priority
     [] change todo date
     [] strikethrough additional sub todos

@@ -72,7 +72,7 @@ function createTaskDialog() {
     modalDiv.appendChild(dialogHead)
 
     const addTodoForm = generateAddTodoForm(dialog);
-    modalDiv.appendChild(addTodoForm);
+    modalDiv.appendChild(addTodoForm);   
 
     dialog.appendChild(modalDiv);
     container.appendChild(dialog);
@@ -286,11 +286,11 @@ export function displayTask(task) {
     // create elements for the task
     const taskCard = document.createElement("div"); 
     const taskTitle = document.createElement("h2");
-    const taskDescr = document.createElement("p");
+    //const taskDescr = document.createElement("p");
     const taskDueDate = document.createElement("h4");
-    const taskPriority = document.createElement("h4");
-    const checklist = document.createElement("div");
-    const taskSubTask = document.createElement("p"); // items from checklist
+    //const taskPriority = document.createElement("h4");
+    //const checklist = document.createElement("div");
+    //const taskSubTask = document.createElement("p"); // items from checklist
     const taskDoneDiv = document.createElement("div");
     const taskDone = document.createElement("input");
     const taskDoneLabel = document.createElement("label");
@@ -302,10 +302,10 @@ export function displayTask(task) {
 
     // add values to elements
     taskTitle.textContent = task.title;
-    taskDescr.textContent = task.description;
+    //taskDescr.textContent = task.description;
     taskDueDate.textContent = task.dueDate;
-    taskPriority.textContent = task.priority;
-    taskSubTask.textContent = task.checklist;
+    //taskPriority.textContent = task.priority;
+    //taskSubTask.textContent = task.checklist;
     taskDone.type = "checkbox";
     taskDone.name = "done";
     taskDone.id = "done";
@@ -319,6 +319,11 @@ export function displayTask(task) {
     taskDoneLabel.textContent = "Done";
     deleteTaskBtn.name = task.title;
     deleteTaskBtn.textContent = "Delete To-do";
+
+    // open dialog to see/edit details
+    taskCard.addEventListener("click", () => {
+        displayTaskDialog(task);
+    });
 
     // event listener for "done" checkbox
     taskDone.addEventListener("change", (e) => {
@@ -347,18 +352,24 @@ export function displayTask(task) {
     taskDoneDiv.appendChild(taskDoneLabel);
 
     // append to card
-    checklist.appendChild(taskSubTask);
+    //checklist.appendChild(taskSubTask);
     taskCard.appendChild(taskTitle);
-    taskCard.appendChild(taskDescr);
+    //taskCard.appendChild(taskDescr);
     taskCard.appendChild(taskDueDate);
-    taskCard.appendChild(taskPriority);
-    taskCard.appendChild(checklist);
+    //taskCard.appendChild(taskPriority);
+    //taskCard.appendChild(checklist);
     taskCard.appendChild(taskDoneDiv);
     taskCard.appendChild(deleteTaskBtn);
 
     taskCardsDiv.appendChild(taskCard);
 
     console.log("To-do displayed!");
+}
+
+// open single todo dialog to see/edit details
+function displayTaskDialog(task) {
+    console.log(task);
+    // call to open dialog that already exists (same dialog for create task just change the form)
 }
 
 // displays all projects and tasks of a project on the side menu

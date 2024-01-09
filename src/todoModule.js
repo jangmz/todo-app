@@ -19,5 +19,4 @@ export class ToDo {
     set doneValue(value) {
         this.done = value;
     }
-
 }
