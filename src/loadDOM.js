@@ -195,8 +195,11 @@ function createOpenTaskDialog() {
     const dialogHead = document.createElement("div");
     const dialogTitle = document.createElement("h1");
     const dialogCloseIcon = document.createElement("img");
+    const basicForm = document.createElement("form");
 
     dialog.id = "open-todo-dialog";
+    basicForm.id = "open-todo-form";
+
     modalDiv.classList.add("modal");
     dialogHead.classList.add("modal-head");
     dialogTitle.textContent = "To Do";
@@ -212,9 +215,7 @@ function createOpenTaskDialog() {
     dialogHead.appendChild(dialogTitle);
     dialogHead.appendChild(dialogCloseIcon);
     modalDiv.appendChild(dialogHead)
-
-    const modifyTodoForm = generateModifyTodoForm(dialog);
-    modalDiv.appendChild(modifyTodoForm);
+    modalDiv.appendChild(basicForm);
 
     dialog.appendChild(modalDiv);
     container.appendChild(dialog);
@@ -222,11 +223,89 @@ function createOpenTaskDialog() {
     return dialog;
 }
 
-function generateModifyTodoForm(dialog) {
-    const form = document.createElement("form");
-    form.id = "open-todo";
-    // find a task in projects via unique id of the task ================================================================================================================
-    return form;
+// generates form fields for task modification/open
+function generateTodoFormFields(task) {
+    // returns array of fields
+    let inputFields = [];
+
+    const priorityChoice = ["High", "Medium", "Low"]
+
+    // fields in form
+    const fields = [
+        { label: "Title", type: "text", name: "title", required: true },
+        { label: "Description", type: "textarea", name: "description" },
+        { label: "Due Date", type: "date", name: "dueDate", required: true },
+        { label: "Priority", type: "select", name: "priority", options: priorityChoice, required: true },
+        { label: "Check list", type: "text", name: "checklist" },
+        { label: "Project title", type: "select", name: "projectTitle", options: MyProjects },
+        //{ label: "Done", type: "checkbox", name: "finished" }
+    ];
+
+    // form element creation
+    fields.forEach(field => {
+        // create div + label for input
+        const fieldDiv = document.createElement("div");
+        const label = document.createElement("label");
+        
+        fieldDiv.classList.add("form-input");
+        label.textContent = field.label;
+
+        let input;
+
+        // generate element depending on the type of input
+        switch(field.type) {
+            case "text":
+                input = document.createElement("input");
+                input.type = field.type;
+                // temporary 
+                input.value = task.title;
+                break;
+            case "textarea":
+                input = document.createElement("textarea");
+                // temporary 
+                input.value = task.description;
+                break;
+            case "date":
+                input = document.createElement("input");
+                input.type = "date";
+                // temporary 
+                input.value = task.dueDate;
+                break;
+            case "select":
+                input = document.createElement("select");
+                
+                field.options.forEach(option => {
+                    const optionElement = document.createElement("option");
+
+                    if (typeof option === "object") {
+                        optionElement.value = option.title.toLowerCase();
+                        optionElement.textContent = option.title;
+                    } else {
+                        optionElement.value = option.toLowerCase();
+                        optionElement.textContent = option;
+                    }
+
+                    if (option.title === task.project.title) {
+                        optionElement.setAttribute("selected", true);
+                    }
+
+                    input.appendChild(optionElement);
+                    
+                });                
+                break;
+        }
+
+        input.id = field.name;
+        input.name = field.name;
+        input.required = field.required;
+
+        fieldDiv.appendChild(label);
+        fieldDiv.appendChild(input);
+        inputFields.push(fieldDiv);
+    });
+
+    console.log("Input fields generated for To Do dialog form");
+    return inputFields;
 }
 
 // generates HTML dialog for adding new project
@@ -417,6 +496,42 @@ function displayTaskDialog(task) {
     console.log(task);
     // call to open dialog that already exists (same dialog for create task just change the form)
     const dialog = document.querySelector("#open-todo-dialog");
+    const form = document.querySelector("#open-todo-form");
+    const inputFieldsArray = generateTodoFormFields(task);
+
+    inputFieldsArray.forEach(inputField => form.appendChild(inputField));
+
+    // "update" button
+    const updateButton = document.createElement("button");
+    updateButton.type = "submit";
+    updateButton.textContent = "Update To-Do";
+
+    form.appendChild(updateButton);
+
+    // when form is submitted
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        // gather all the input data and create a todo object, display todo on the DOM
+        //displayTask(gatherFormDataTodo());
+        console.log("update the task in the projects array");
+
+        //refresh the side menu projects and tasks
+        console.log( e.target.projectTitle.value);
+        refreshSideMenuProjects();
+
+        // display content of the project in which this task is saved
+        // parameter is the project object that compared to the project title you added a task to
+        displayProjectTasks(MyProjects.filter(project => project.title.toLowerCase() === e.target.projectTitle.value)[0]);
+
+        dialog.close();
+        //form.reset(); -> enable when finished
+    });
+
+    console.log("To-do updated!");
+
+    form.appendChild(updateButton);
+    dialog.appendChild(form);
     dialog.showModal();
 }
 
