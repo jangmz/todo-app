@@ -1,5 +1,6 @@
 import { gatherFormDataTodo, logData, saveFormDataProject, deleteProject } from "./index.js";
 import { MyProjects } from "./index.js";
+import { ToDo } from "./todoModule.js";
 import closeIcon from "./assets/icons/close-circle.svg";
 
 // loads the initial HTML
@@ -238,7 +239,7 @@ function generateTodoFormFields(task) {
         { label: "Priority", type: "select", name: "priority", options: priorityChoice, required: true },
         { label: "Check list", type: "text", name: "checklist" },
         { label: "Project title", type: "select", name: "projectTitle", options: MyProjects },
-        //{ label: "Done", type: "checkbox", name: "finished" }
+        { label: "Done", type: "checkbox", name: "finished" }
     ];
 
     // form element creation
@@ -257,18 +258,15 @@ function generateTodoFormFields(task) {
             case "text":
                 input = document.createElement("input");
                 input.type = field.type;
-                // temporary 
                 input.value = task.title;
                 break;
             case "textarea":
                 input = document.createElement("textarea");
-                // temporary 
                 input.value = task.description;
                 break;
             case "date":
                 input = document.createElement("input");
                 input.type = "date";
-                // temporary 
                 input.value = task.dueDate;
                 break;
             case "select":
@@ -293,6 +291,10 @@ function generateTodoFormFields(task) {
                     
                 });                
                 break;
+            case "checkbox":
+                input = document.createElement("input");
+                input.type = field.type;
+                input.value = task.done;
         }
 
         input.id = field.name;
@@ -493,11 +495,17 @@ export function displayTask(task) {
 
 // open single todo dialog to see/edit details
 function displayTaskDialog(task) {
-    console.log(task);
+    console.log("Clicked task id: " + task.id);
     // call to open dialog that already exists (same dialog for create task just change the form)
     const dialog = document.querySelector("#open-todo-dialog");
+    const modal = dialog.querySelector(".modal");
     const form = document.querySelector("#open-todo-form");
     const inputFieldsArray = generateTodoFormFields(task);
+
+    // clears the form so it can be reloaded with new information
+    while (form.firstChild) {
+        form.removeChild(form.firstChild);
+    }
 
     inputFieldsArray.forEach(inputField => form.appendChild(inputField));
 
@@ -512,12 +520,24 @@ function displayTaskDialog(task) {
     form.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        // gather all the input data and create a todo object, display todo on the DOM
-        //displayTask(gatherFormDataTodo());
-        console.log("update the task in the projects array");
+        console.log("Updating the task ID "+ task.id + " in the projects array...");
+        MyProjects.forEach(project => {
+            if (project.title.toLowerCase() === e.target.projectTitle.value.toLowerCase()) {
+                project.tasks.forEach(taskInProject => {
+                    if (taskInProject.id === task.id) {
+                        //let newTaskData = new ToDo (e.target.title.value, e.target.description.value, e.target.dueDate.value, e.target.priority.value, e.target.checklist.value); //e.target.projectTitle.value); //e.target.done.value);
+                        taskInProject.updateData(e.target.title.value, e.target.description.value, e.target.dueDate.value, e.target.priority.value, e.target.checklist.value, e.target.finished.value);
+                    } else {
+                        console.log("Task not found!");
+                    }
+                })
+                console.log(`Task in project -> ${project.title.toUpperCase()} <- has been updated!`);
+                console.log(project);
+            }
+            console.log("Ven: " + project);
+        });
 
         //refresh the side menu projects and tasks
-        console.log( e.target.projectTitle.value);
         refreshSideMenuProjects();
 
         // display content of the project in which this task is saved
@@ -525,13 +545,11 @@ function displayTaskDialog(task) {
         displayProjectTasks(MyProjects.filter(project => project.title.toLowerCase() === e.target.projectTitle.value)[0]);
 
         dialog.close();
-        //form.reset(); -> enable when finished
     });
 
-    console.log("To-do updated!");
-
     form.appendChild(updateButton);
-    dialog.appendChild(form);
+    modal.appendChild(form);
+    
     dialog.showModal();
 }
 

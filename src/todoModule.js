@@ -20,4 +20,15 @@ export class ToDo {
     set doneValue(value) {
         this.done = value;
     }
+
+    updateData(title, description, dueDate, priority, checklist, done) {
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.priority = priority;
+        this.checklist = checklist;
+        this.done = done;
+        //this.project = newData.project;
+        console.log("Todo data updated.");
+    }
 }

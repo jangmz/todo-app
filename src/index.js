@@ -58,6 +58,7 @@ export function deleteProject(projectForDelete) {
     refreshContent();
 }
 
+// array of all projects
 export let MyProjects = [
     new Project("Other", "default"),
     new Project("Home renovation", "custom")
