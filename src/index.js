@@ -84,7 +84,8 @@ logData();
     [x] delete a todo (button)
     [x] delete project (button)
     [x] view todos in each project (title and due date only)
-    [] expand a single todo to see/edit details (dialog box) -> displayTaskDialog
+    [x] expand a single todo to see details (dialog box) -> displayTaskDialog
+    [] expand a single todo to edit details -> loadDOM (row 517)
     [] change todo priority
     [] change todo date
     [] strikethrough additional sub todos
