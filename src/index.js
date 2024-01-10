@@ -20,8 +20,9 @@ export function gatherFormDataTodo() {
     MyProjects.forEach(project => {
         if (project.title.toLowerCase() === projectTitle.value) {
             // create object from the data
-            todo = new ToDo(title.value, description.value, dueDate.value, priority.value, checklist.value, project, done);
-            
+            todo = new ToDo(toDoId, title.value, description.value, dueDate.value, priority.value, checklist.value, project, done);
+            toDoId++; // inkrement id number for tasks
+
             project.addTodoToProject(todo);
             console.log(`To-do added to ${project.title.toUpperCase()}`);
         }
@@ -62,6 +63,8 @@ export let MyProjects = [
     new Project("Home renovation", "custom")
 ];
 
+let toDoId = 0;
+
 loadDOM();
 logData();
 
@@ -81,7 +84,7 @@ logData();
     [x] delete a todo (button)
     [x] delete project (button)
     [x] view todos in each project (title and due date only)
-    [] expand a single todo to see/edit details (dialog box) -> loadDOM.js (row 372)
+    [] expand a single todo to see/edit details (dialog box) -> displayTaskDialog
     [] change todo priority
     [] change todo date
     [] strikethrough additional sub todos

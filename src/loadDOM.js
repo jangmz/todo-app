@@ -7,6 +7,7 @@ export function loadDOM() {
     const container = document.querySelector(".container");
     const dialog = createTaskDialog(); // dialog for a new todo
     const dialog2 = createProjectDialog(); // dialog for a new project
+    const modifyTodoDialog = createOpenTaskDialog(); // dialog for modifying / opening todo
 
     const content = document.createElement("div");
     const contentHeading = document.createElement("div");
@@ -39,6 +40,7 @@ export function loadDOM() {
     sideMenu.appendChild(buttonsArea);
     content.appendChild(contentHeading);
     content.appendChild(taskCards);
+    container.appendChild(modifyTodoDialog);
     container.appendChild(sideMenu);
     container.appendChild(content);
     
@@ -72,7 +74,7 @@ function createTaskDialog() {
     modalDiv.appendChild(dialogHead)
 
     const addTodoForm = generateAddTodoForm(dialog);
-    modalDiv.appendChild(addTodoForm);   
+    modalDiv.appendChild(addTodoForm);
 
     dialog.appendChild(modalDiv);
     container.appendChild(dialog);
@@ -186,6 +188,47 @@ function generateAddTodoForm(dialog) {
     return form;
 }
 
+function createOpenTaskDialog() {
+    const container = document.querySelector(".container");
+    const dialog = document.createElement("dialog");
+    const modalDiv = document.createElement("div");
+    const dialogHead = document.createElement("div");
+    const dialogTitle = document.createElement("h1");
+    const dialogCloseIcon = document.createElement("img");
+
+    dialog.id = "open-todo-dialog";
+    modalDiv.classList.add("modal");
+    dialogHead.classList.add("modal-head");
+    dialogTitle.textContent = "To Do";
+    dialogCloseIcon.classList.add("close-icon");
+    dialogCloseIcon.id = "close";
+    dialogCloseIcon.src = closeIcon; 
+    //dialogCloseIcon.src = "/src/assets/icons/close-circle.svg";
+    
+    dialogCloseIcon.addEventListener("click", () => {
+        dialog.close();
+    });
+
+    dialogHead.appendChild(dialogTitle);
+    dialogHead.appendChild(dialogCloseIcon);
+    modalDiv.appendChild(dialogHead)
+
+    const modifyTodoForm = generateModifyTodoForm(dialog);
+    modalDiv.appendChild(modifyTodoForm);
+
+    dialog.appendChild(modalDiv);
+    container.appendChild(dialog);
+
+    return dialog;
+}
+
+function generateModifyTodoForm(dialog) {
+    const form = document.createElement("form");
+    form.id = "open-todo";
+    // find a task in projects via unique id of the task ================================================================================================================
+    return form;
+}
+
 // generates HTML dialog for adding new project
 function createProjectDialog() {
     const container = document.querySelector(".container");
@@ -296,6 +339,9 @@ export function displayTask(task) {
     const taskDoneLabel = document.createElement("label");
     const deleteTaskBtn = document.createElement("button");
 
+    // assign id from task to the div
+    taskCard.id = task.id;
+
     // add class for css
     taskCard.classList.add("task-card");
     taskDoneDiv.classList.add("task-done");
@@ -303,7 +349,7 @@ export function displayTask(task) {
     // add values to elements
     taskTitle.textContent = task.title;
     //taskDescr.textContent = task.description;
-    taskDueDate.textContent = task.dueDate;
+    taskDueDate.textContent = "Due date: " + task.dueDate;
     //taskPriority.textContent = task.priority;
     //taskSubTask.textContent = task.checklist;
     taskDone.type = "checkbox";
@@ -321,7 +367,7 @@ export function displayTask(task) {
     deleteTaskBtn.textContent = "Delete To-do";
 
     // open dialog to see/edit details
-    taskCard.addEventListener("click", () => {
+    taskTitle.addEventListener("click", () => {
         displayTaskDialog(task);
     });
 
@@ -343,7 +389,7 @@ export function displayTask(task) {
     // event listener for task delete button
     deleteTaskBtn.addEventListener("click", () => {
         // call function to delete a task
-        task.project.deleteTaskFromProject(task.title);
+        task.project.deleteTaskFromProject(task.id);
         refreshContent();
         task.project.displayTasksToDOM();
     });
@@ -370,6 +416,8 @@ export function displayTask(task) {
 function displayTaskDialog(task) {
     console.log(task);
     // call to open dialog that already exists (same dialog for create task just change the form)
+    const dialog = document.querySelector("#open-todo-dialog");
+    dialog.showModal();
 }
 
 // displays all projects and tasks of a project on the side menu

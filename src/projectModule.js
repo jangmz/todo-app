@@ -23,9 +23,9 @@ export class Project {
         }
     }
 
-    deleteTaskFromProject(taskTitle) {
-        this.tasks = this.tasks.filter(task => task.title != taskTitle)
-        console.log(`Task ${taskTitle} deleted!`);
+    deleteTaskFromProject(taskId) {
+        this.tasks = this.tasks.filter(task => task.id != taskId)
+        console.log(`Task with ID ${taskId} deleted!`);
         console.log("Tasks after deletion:");
         this.tasks.forEach(task => console.log(task));
     }

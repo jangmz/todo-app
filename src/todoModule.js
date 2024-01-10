@@ -2,7 +2,8 @@ import { Project } from "./projectModule";
 import { displayTask } from "./loadDOM";
 
 export class ToDo {
-    constructor(title, description, dueDate, priority, checklist, project, done) {
+    constructor(id, title, description, dueDate, priority, checklist, project, done) {
+        this.id = id
         this.title = title;
         this.description = description;
         this.dueDate = dueDate; // date type
