@@ -1,7 +1,7 @@
 <h1>To do app</h1>
 
 ## Preview
-Check the page ![HERE](https://jangmz.github.io/todo-app/)
+Check the page [HERE](https://jangmz.github.io/todo-app/)
 
 ## Built with
 - ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
