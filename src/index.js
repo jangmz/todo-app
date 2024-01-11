@@ -90,4 +90,11 @@ logData();
     [x] change todo priority
     [x] change todo date
     [] include local storage instead of arrays
+        [] function to save projects/todos to localStorage everytime a new project/todo is created
+        [] function that looks for that data in localStorage when the app is loaded
+
+        [] if you want to retrieve data that doesnt exist it shouldn't crash
+        [] you can inspect data in local storage using dev tools (Storage -> Local storage)
+        [] use JSON to send and store data
+        [] JSON cannot store functions, how to add methods back when you retrieve data from storage?
 */

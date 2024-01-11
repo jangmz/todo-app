@@ -1,7 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+
 body {
     margin: 0;
     padding: 0;
-    /*background-color: darkolivegreen;*/
+    background-color: rgb(197, 197, 197);
+    font-family: 'Raleway', sans-serif;
+}
+
+dialog {
+    background-color: rgb(212, 212, 212);
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 .container {
@@ -10,7 +22,7 @@ body {
 }
 
 .modal {
-    width: 400px;
+    width: 300px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -24,34 +36,59 @@ body {
 .modal form {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 15px;
 }
 .modal form .form-input {
+    width: 250px;
     display: flex;
     flex-direction: column;
 }
 
+.modal form .form-input input,
+.modal form .form-input textarea,
+.modal form .form-input select {
+    padding: 5px;
+    border: 0;
+    border-radius: 5px;
+}
+
 .side-menu {
-    width: 260px;
-    height: 95vh;
-    padding: 20px;
+    width: 300px;
+    height: 100vh;
+    background-color: rgb(156, 156, 156);
     border-right: 1px solid black;
+    box-shadow: 0 0 7px black;
 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-.projects-area {
-    margin-left: 15px;
+.side-menu-quote {
+    padding: 10px;
+    margin: 0;
+    font-family: 'Dancing Script', cursive;
+    font-size: 24px;
+    text-align: center;
+}
 
+.projects-area {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
 .side-project {
+    padding-left: 20px;
+    padding-right: 15px;
     line-height: 0.6;
+}
+
+.side-project:hover {
+    cursor: pointer;
+    background-color: rgb(206, 47, 47);
+    color:white;
 }
 
 .side-project-title {
@@ -66,20 +103,54 @@ body {
 }
 
 .buttons-area {
+    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
 }
 
-.buttons-area button {
+.buttons-area button,
+.modal form button,
+.content-heading .delete-project-btn {
+    background-color: rgb(206, 47, 47);
+    color: white;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
     width: 160px;
-    padding: 10px 30px;
+    padding: 15px 20px;
+    border: 0;
+    border-radius: 7px;
+}
+
+.buttons-area button:hover,
+.modal form button:hover,
+.content-heading .delete-project-btn:hover,
+.task-card button:hover {
+    cursor: pointer;
 }
 
 .content {
     width: 100%;
     padding: 30px;
+}
+
+.content-heading {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+}
+
+.content-heading h1 {
+    grid-row: 1 / 2;
+    grid-column: 1 / 2;
+}
+
+.content-heading .delete-project-btn {
+    grid-row: 1 / 2;
+    grid-column: 2 / -1;
+    justify-self: center;
+    align-self: center;
 }
 
 .task-cards {
@@ -91,8 +162,39 @@ body {
     gap: 20px;    
 }
 
+.task-cards .message {
+    grid-column: 1 / -1;
+    text-align: center;
+}
+
 .task-card {
     padding: 20px;
     border: 1px solid black;
+    border-radius: 7px;
+    text-align: center;
     flex: auto;
+}
+
+.task-card .task-done {
+    padding-bottom: 10px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.task-card .task-done input.done-checkbox {
+    width: 20px;
+    height: 20px;
+}
+
+.task-card button {
+    background-color: rgb(206, 47, 47);
+    color: white;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+    width: 80px;
+    padding: 10px;
+    border: 0;
+    border-radius: 7px;
 }

@@ -1,7 +1,7 @@
 import { gatherFormDataTodo, logData, saveFormDataProject, deleteProject } from "./index.js";
 import { MyProjects } from "./index.js";
 import { ToDo } from "./todoModule.js";
-import closeIcon from "./assets/icons/close-circle.svg";
+import closeIcon from "./assets/icons/close.png";
 
 // loads the initial HTML
 export function loadDOM() {
@@ -14,6 +14,7 @@ export function loadDOM() {
     const contentHeading = document.createElement("div");
     const taskCards = document.createElement("div");
     const sideMenu = document.createElement("div");
+    const sideMenuQuote = document.createElement("h3");
     const projectsArea = createProjectsSideMenu(); // where projects will be displayed on the side menu
     const buttonsArea = document.createElement("div"); // buttons for creating todo and creating project
     const newTodoButton = document.createElement("button");
@@ -24,6 +25,11 @@ export function loadDOM() {
     taskCards.classList.add("task-cards");
     sideMenu.classList.add("side-menu");
     buttonsArea.classList.add("buttons-area");
+    sideMenuQuote.classList.add("side-menu-quote");
+
+    contentHeading.textContent = "Create your first To-do/Project by clicking the button on the left side menu.";
+
+    sideMenuQuote.textContent = "Don't put off until tomorrow what you can do today.";
 
     newTodoButton.textContent = "Add new to-do";
     newTodoButton.addEventListener("click", () => {
@@ -37,6 +43,7 @@ export function loadDOM() {
     buttonsArea.appendChild(newTodoButton);
     buttonsArea.appendChild(newProjectButton);
 
+    sideMenu.appendChild(sideMenuQuote);
     sideMenu.appendChild(projectsArea);
     sideMenu.appendChild(buttonsArea);
     content.appendChild(contentHeading);
@@ -123,18 +130,18 @@ function generateAddTodoForm(dialog) {
                 input = document.createElement("input");
                 input.type = field.type;
                 // temporary 
-                input.value = "test title";
+                input.value = "Test title";
                 break;
             case "textarea":
                 input = document.createElement("textarea");
                 // temporary 
-                input.value = "test description";
+                input.value = "This dscription is a test";
                 break;
             case "date":
                 input = document.createElement("input");
                 input.type = "date";
                 // temporary 
-                input.value = "2023-12-23";
+                input.value = "2024-09-23";
                 break;
             case "select":
                 input = document.createElement("select");
@@ -410,11 +417,7 @@ export function displayTask(task) {
     // create elements for the task
     const taskCard = document.createElement("div"); 
     const taskTitle = document.createElement("h2");
-    //const taskDescr = document.createElement("p");
     const taskDueDate = document.createElement("h4");
-    //const taskPriority = document.createElement("h4");
-    //const checklist = document.createElement("div");
-    //const taskSubTask = document.createElement("p"); // items from checklist
     const taskDoneDiv = document.createElement("div");
     const taskDone = document.createElement("input");
     const taskDoneLabel = document.createElement("label");
@@ -426,16 +429,15 @@ export function displayTask(task) {
     // add class for css
     taskCard.classList.add("task-card");
     taskDoneDiv.classList.add("task-done");
+    taskDone.classList.add("done-checkbox");
 
     // add values to elements
     taskTitle.textContent = task.title;
-    //taskDescr.textContent = task.description;
     taskDueDate.textContent = "Due date: " + task.dueDate;
-    //taskPriority.textContent = task.priority;
-    //taskSubTask.textContent = task.checklist;
     taskDone.type = "checkbox";
     taskDone.name = "done";
     taskDone.id = "done";
+
     if (task.done === false) {
         taskDone.checked = false;
         taskCard.style.backgroundColor = "#90ee90";
@@ -445,7 +447,7 @@ export function displayTask(task) {
     }
     taskDoneLabel.textContent = "Done";
     deleteTaskBtn.name = task.title;
-    deleteTaskBtn.textContent = "Delete To-do";
+    deleteTaskBtn.textContent = "Delete";
 
     // open dialog to see/edit details
     taskTitle.addEventListener("click", () => {
@@ -472,19 +474,15 @@ export function displayTask(task) {
         // call function to delete a task
         task.project.deleteTaskFromProject(task.id);
         refreshContent();
-        task.project.displayTasksToDOM();
+        displayProjectTasks(task.project);
     });
 
     taskDoneDiv.appendChild(taskDone);
     taskDoneDiv.appendChild(taskDoneLabel);
 
     // append to card
-    //checklist.appendChild(taskSubTask);
     taskCard.appendChild(taskTitle);
-    //taskCard.appendChild(taskDescr);
     taskCard.appendChild(taskDueDate);
-    //taskCard.appendChild(taskPriority);
-    //taskCard.appendChild(checklist);
     taskCard.appendChild(taskDoneDiv);
     taskCard.appendChild(deleteTaskBtn);
 

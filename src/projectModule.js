@@ -13,11 +13,11 @@ export class Project {
 
     displayTasksToDOM() {
         if (this.tasks.length === 0) {
-            const taskCardsDiv = document.querySelector(".task-cards");
+            const taskCards = document.querySelector(".task-cards");
             const message = document.createElement("h4");
             message.classList.add("message");
             message.textContent = "This project has no tasks. Create them, by clicking the button on the side menu.";
-            taskCardsDiv.appendChild(message);
+            taskCards.appendChild(message);
         } else {
             this.tasks.forEach(task => displayTask(task));
         }
